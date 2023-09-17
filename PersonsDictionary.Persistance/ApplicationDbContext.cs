@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Persistance.Configurations;
+using Microsoft.Extensions.Logging;
 
 namespace Persistence.Data
 {
@@ -21,6 +22,11 @@ namespace Persistence.Data
                        .ApplyConfiguration(new PersonRelationConfiguration())
                        .ApplyConfiguration(new PhoneNumberConfiguration())
                        .ApplyConfiguration(new CityConfiguration());
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         }
     }
 }

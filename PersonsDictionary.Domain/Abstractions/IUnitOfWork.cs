@@ -1,6 +1,7 @@
-﻿namespace Domain.Abstractions;
-
-public interface IUnitOfWork
+﻿namespace Domain.Abstractions
 {
-    Task CommitAsync(CancellationToken cancellationToken);
+    public interface IUnitOfWork
+    {
+        Task CommitAsync(CancellationToken cancellationToken);
+    }
 }

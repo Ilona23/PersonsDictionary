@@ -1,6 +1,7 @@
-﻿namespace Application.Services;
-
-public interface IResourceManagerService
+﻿namespace Application.Services
 {
-    string GetString(string name);
+    public interface IResourceManagerService
+    {
+        string GetString(string name);
+    }
 }

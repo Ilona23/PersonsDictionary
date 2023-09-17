@@ -23,7 +23,7 @@ namespace Application.Persons.Commands.DeletePerson
 
         public async Task<Unit> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetPersonByIdAsync(request.Id);
+            var person = await _repository.GetAsync(request.Id);
 
             if (person is null)
             {
@@ -32,7 +32,14 @@ namespace Application.Persons.Commands.DeletePerson
             }
 
             _repository.Delete(person);
-            await _unitOfWork.CommitAsync(cancellationToken);
+            try
+            {
+                await _unitOfWork.CommitAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                // Handle or log the exception
+            }
 
             return new Unit();
         }

@@ -1,12 +1,13 @@
-﻿namespace Domain.Exceptions;
-
-public class ValidationException : Exception
+﻿namespace Domain.Exceptions
 {
-    public ValidationException()
-        : base("One or more validation failures have occurred.")
+    public class ValidationException : Exception
     {
-        Errors = new Dictionary<string, string[]>();
-    }
+        public ValidationException()
+            : base("One or more validation failures have occurred.")
+        {
+            Errors = new Dictionary<string, string[]>();
+        }
 
-    public IDictionary<string, string[]> Errors { get; }
+        public IDictionary<string, string[]> Errors { get; }
+    }
 }

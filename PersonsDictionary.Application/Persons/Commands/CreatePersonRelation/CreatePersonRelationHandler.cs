@@ -5,46 +5,47 @@ using Domain.Abstractions;
 using Application.Constants;
 using Application.Services;
 
-namespace Application.Persons.Commands.CreatePersonRelation;
-
-public class CreatePersonRelationHandler : IRequestHandler<CreatePersonRelationCommand, Unit>
+namespace Application.Persons.Commands.CreatePersonRelation
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IPersonRepository _repository;
-    private readonly IResourceManagerService _resourceManagerService;
-
-    public CreatePersonRelationHandler(IPersonRepository repository,
-        IUnitOfWork unitOfWork,
-        IResourceManagerService resourceManagerService)
+    public class CreatePersonRelationHandler : IRequestHandler<CreatePersonRelationCommand, Unit>
     {
-        _repository = repository;
-        _unitOfWork = unitOfWork;
-        _resourceManagerService = resourceManagerService;
-    }
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPersonRepository _repository;
+        private readonly IResourceManagerService _resourceManagerService;
 
-    public async Task<Unit> Handle(CreatePersonRelationCommand request, CancellationToken cancellationToken)
-    {
-        var person = await _repository.GetAsync(request.PersonId);
-        if (person is null)
+        public CreatePersonRelationHandler(IPersonRepository repository,
+            IUnitOfWork unitOfWork,
+            IResourceManagerService resourceManagerService)
         {
-            var message = _resourceManagerService.GetString(ValidationMessages.PersonNotFoundById);
-            throw new NotFoundException(string.Format(message, request.PersonId), true);
+            _repository = repository;
+            _unitOfWork = unitOfWork;
+            _resourceManagerService = resourceManagerService;
         }
 
-        var relatedPerson = await _repository.GetAsync(request.RelatedPersonId);
-        if (relatedPerson is null)
+        public async Task<Unit> Handle(CreatePersonRelationCommand request, CancellationToken cancellationToken)
         {
-            var message = _resourceManagerService.GetString(ValidationMessages.RelatedPersonNotFoundById);
-            throw new NotFoundException(string.Format(message, request.RelatedPersonId), true);
+            var person = await _repository.GetPersonByIdAsync(request.PersonId);
+            if (person is null)
+            {
+                var message = _resourceManagerService.GetString(ValidationMessages.PersonNotFoundById);
+                throw new NotFoundException(string.Format(message, request.PersonId), true);
+            }
+
+            var relatedPerson = await _repository.GetPersonByIdAsync(request.RelatedPersonId);
+            if (relatedPerson is null)
+            {
+                var message = _resourceManagerService.GetString(ValidationMessages.RelatedPersonNotFoundById);
+                throw new NotFoundException(string.Format(message, request.RelatedPersonId), true);
+            }
+
+            var personRelation = new PersonRelation(person, relatedPerson, request.RelatedType);
+
+            person.RelatedPersons.Add(personRelation);
+            relatedPerson.RelatedToPersons.Add(personRelation);
+
+            await _unitOfWork.CommitAsync(cancellationToken);
+
+            return new Unit();
         }
-
-        var personRelation = new PersonRelation(person, relatedPerson, request.RelatedType);
-
-        person.RelatedPersons.Add(personRelation);
-        relatedPerson.RelatedToPersons.Add(personRelation);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        return new Unit();
     }
 }

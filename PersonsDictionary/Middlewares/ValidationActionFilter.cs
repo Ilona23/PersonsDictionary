@@ -39,5 +39,4 @@ namespace Web.Middlewares
             Message = message;
         }
     }
-
 }

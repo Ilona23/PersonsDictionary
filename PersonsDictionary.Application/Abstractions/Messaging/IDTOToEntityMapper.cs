@@ -1,8 +1,10 @@
 ﻿using Application.Persons.Commands.CreatePerson;
 using Domain.Entities;
 
-namespace Domain.Abstractions;
-public interface IDTOToEntityMapper
+namespace Domain.Abstractions
 {
-    Person ConvertDTOToEntity(CreatePersonCommand command);
+    public interface IDTOToEntityMapper
+    {
+        Person ConvertDTOToEntity(CreatePersonCommand command);
+    }
 }

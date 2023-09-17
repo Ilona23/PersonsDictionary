@@ -69,6 +69,4 @@ public class CreatePersonCommandValidator : AbstractValidator<CreatePersonComman
     {
         return _resourceManagerService.GetString(key);
     }
-
 }
-

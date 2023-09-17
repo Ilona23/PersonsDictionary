@@ -7,7 +7,10 @@ namespace Persistence
     {
         private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(ApplicationDbContext context) => _context = context;
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task CommitAsync(CancellationToken cancellationToken)
         {

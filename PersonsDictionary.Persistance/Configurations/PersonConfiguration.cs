@@ -11,28 +11,28 @@ namespace Persistance.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.FirstName)
-                .HasMaxLength(50);
+                   .HasMaxLength(50);
 
             builder.Property(x => x.LastName)
-                .HasMaxLength(50);
+                   .HasMaxLength(50);
 
             builder.Property(x => x.PersonalId)
-                .HasMaxLength(11);
+                   .HasMaxLength(11);
 
             builder.HasMany(x => x.PhoneNumbers)
-                .WithOne(x => x.Person)
-                .HasForeignKey(x => x.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
+                   .WithOne(x => x.Person)
+                   .HasForeignKey(x => x.PersonId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(p => p.RelatedPersons)
-                .WithOne(pr => pr.Person)
-                .HasForeignKey(pr => pr.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
+                   .WithOne(pr => pr.Person)
+                   .HasForeignKey(pr => pr.PersonId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(p => p.RelatedToPersons)
-                .WithOne(pr => pr.RelatedPerson)
-                .HasForeignKey(pr => pr.RelatedPersonId)
-                .OnDelete(DeleteBehavior.Restrict);
+                   .WithOne(pr => pr.RelatedPerson)
+                   .HasForeignKey(pr => pr.RelatedPersonId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

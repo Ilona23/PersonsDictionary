@@ -11,12 +11,12 @@ namespace Persistance.Configurations
             builder.HasKey(pr => new { pr.PersonId, pr.RelatedPersonId });
 
             builder.HasOne(pr => pr.Person)
-                .WithMany(p => p.RelatedPersons)
-                .HasForeignKey(pr => pr.PersonId);
+                   .WithMany(p => p.RelatedPersons)
+                   .HasForeignKey(pr => pr.PersonId);
 
             builder.HasOne(pr => pr.RelatedPerson)
-                .WithMany(p => p.RelatedToPersons)
-                .HasForeignKey(pr => pr.RelatedPersonId);
+                   .WithMany(p => p.RelatedToPersons)
+                   .HasForeignKey(pr => pr.RelatedPersonId);
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System.Net;
 
-namespace Domain.Exceptions;
-
-public class BadRequestException : Exception
+namespace Domain.Exceptions
 {
-    public HttpStatusCode Code { get; set; }
-
-    public bool ShowMessage { get; set; }
-
-    public BadRequestException(string message, HttpStatusCode code) : base(message)
+    public class BadRequestException : Exception
     {
-        Code = code;
+        public HttpStatusCode Code { get; set; }
+
+        public bool ShowMessage { get; set; }
+
+        public BadRequestException(string message, HttpStatusCode code) : base(message)
+        {
+            Code = code;
+        }
     }
 }

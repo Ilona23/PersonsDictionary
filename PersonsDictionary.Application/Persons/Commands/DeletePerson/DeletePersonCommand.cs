@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
-namespace Application.Persons.Commands.DeletePerson;
-
-public class DeletePersonCommand : IRequest<Unit>
+namespace Application.Persons.Commands.DeletePerson
 {
-    public int Id { get; set; }
+    public class DeletePersonCommand : IRequest<Unit>
+    {
+        public int Id { get; set; }
+    }
 }
-

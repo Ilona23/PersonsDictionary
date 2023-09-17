@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Domain.Entities;
 using Domain.Exceptions;
 using System.Net;
 using Domain.Abstractions;
@@ -29,24 +28,7 @@ namespace Application.Persons.Commands.CreatePerson
                 throw new HttpException($"Person with PersonalId: {request.PersonalId} already exists.", HttpStatusCode.AlreadyReported);
             }
 
-            IEnumerable<PhoneNumber> convertPhoneNumbers = request.PhoneNumbers.Select(x => new PhoneNumber
-            {
-                Number = x.Number,
-                NumberType = x.NumberType
-            });
-
-            var per = _DTOToEntityMapper.ConvertDTOToEntity(request);
-
-            var person = new Person()
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                PersonalId = request.PersonalId,
-                BirthDate = request.BirthDate,
-                CityId = request.CityId,
-                Gender = request.Gender,
-                PhoneNumbers = convertPhoneNumbers.ToArray(),
-            };
+            var person = _DTOToEntityMapper.ConvertDTOToEntity(request);
 
             await _repository.InsertAsync(person);
             await _unitOfWork.CommitAsync(cancellationToken);

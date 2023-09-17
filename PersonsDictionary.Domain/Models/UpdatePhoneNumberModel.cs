@@ -1,6 +1,7 @@
-﻿namespace Domain.Models;
-
-public class UpdatePhoneNumberModel : PhoneNumberModel
+﻿namespace Domain.Models
 {
-    public int Id { get; set; }
+    public class UpdatePhoneNumberModel : PhoneNumberModel
+    {
+        public int Id { get; set; }
+    }
 }

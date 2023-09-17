@@ -1,0 +1,274 @@
+﻿{
+  "cities": [
+    {
+      "nameKa": "თბილისი",
+      "nameEn": "Tbilisi",
+      "location": "41.7151377,44.82709599999998"
+    },
+    {
+      "nameKa": "აბაშა",
+      "nameEn": "Abasha",
+      "location": "42.2046024,42.2029857"
+    },
+    {
+      "nameKa": "ამბროლაური",
+      "nameEn": "Ambrolauri",
+      "location": "42.5144988,43.14576910000005"
+    },
+    {
+      "nameKa": "ახალქალაქი",
+      "nameEn": "Akhalkalaki",
+      "location": "41.4025151,43.487163099999975"
+    },
+    {
+      "nameKa": "ახალციხე",
+      "nameEn": "Akhaltsikhe",
+      "location": "41.6434293,42.993444899999986"
+    },
+    {
+      "nameKa": "ახმეტა",
+      "nameEn": "Akhmeta",
+      "location": "42.0385204,45.20684110000002"
+    },
+    {
+      "nameKa": "ბათუმი",
+      "nameEn": "Batumi",
+      "location": "41.6167547,41.63674549999996"
+    },
+    {
+      "nameKa": "ბაღდათი",
+      "nameEn": "Baghdati",
+      "location": "42.0732393,42.82122179999999"
+    },
+    {
+      "nameKa": "ბოლნისი",
+      "nameEn": "Bolnisi",
+      "location": "41.4493594,44.548866299999986"
+    },
+    {
+      "nameKa": "ბორჯომი",
+      "nameEn": "Borjomi",
+      "location": "41.8399528,43.39075690000004"
+    },
+    {
+      "nameKa": "გარდაბანი",
+      "nameEn": "Gardabani",
+      "location": "41.4584982,45.09132019999993"
+    },
+    {
+      "nameKa": "გორი",
+      "nameEn": "Gori",
+      "location": "41.9854144,44.10841099999993"
+    },
+    {
+      "nameKa": "გურჯაანი",
+      "nameEn": "Gurjaani",
+      "location": "41.7438812,45.78938059999996"
+    },
+    {
+      "nameKa": "დედოფლისწყარო",
+      "nameEn": "Dedoplistskaro",
+      "location": "41.4672254,46.117521500000066"
+    },
+    {
+      "nameKa": "დმანისი",
+      "nameEn": "Dmanisi",
+      "location": "41.3298054,44.207312499999944"
+    },
+    {
+      "nameKa": "დუშეთი",
+      "nameEn": "Dusheti",
+      "location": "42.0869842,44.69484509999995"
+    },
+    {
+      "nameKa": "ვალე",
+      "nameEn": "Vale",
+      "location": "41.61379609999999,42.87623350000001"
+    },
+    {
+      "nameKa": "ვანი",
+      "nameEn": "Vani",
+      "location": "42.0889602,42.50448430000006"
+    },
+    {
+      "nameKa": "ზესტაფონი",
+      "nameEn": "Zestaponi",
+      "location": "42.1083332,43.03749330000005"
+    },
+    {
+      "nameKa": "ზუგდიდი",
+      "nameEn": "Zugdidi",
+      "location": "42.5091391,41.86699199999998"
+    },
+    {
+      "nameKa": "თეთრიწყარო",
+      "nameEn": "Tetritskaro",
+      "location": "41.54230829999999,44.47256360000006"
+    },
+    {
+      "nameKa": "თელავი",
+      "nameEn": "Telavi",
+      "location": "41.918509,45.47769089999997"
+    },
+    {
+      "nameKa": "თერჯოლა",
+      "nameEn": "Terjola",
+      "location": "42.1827769,42.96864500000004"
+    },
+    {
+      "nameKa": "კასპი",
+      "nameEn": "Kaspi",
+      "location": "41.9260017,44.42450259999998"
+    },
+    {
+      "nameKa": "ლაგოდეხი",
+      "nameEn": "Lagodekhi",
+      "location": "41.8186298,46.278130799999985"
+    },
+    {
+      "nameKa": "ლანჩხუთი",
+      "nameEn": "Lanchkhuti",
+      "location": "42.0902225,42.03597119999995"
+    },
+    {
+      "nameKa": "მარნეული",
+      "nameEn": "Marneuli",
+      "location": "41.4689396,44.785078"
+    },
+    {
+      "nameKa": "მარტვილი",
+      "nameEn": "Martvili",
+      "location": "42.4231839,42.381114600000046"
+    },
+    {
+      "nameKa": "მცხეთა",
+      "nameEn": "Mtskheta",
+      "location": "41.8411674,44.70738640000002"
+    },
+    {
+      "nameKa": "ნინოწმინდა",
+      "nameEn": "Ninotsminda",
+      "location": "41.2713699,43.587938500000064"
+    },
+    {
+      "nameKa": "ოზურგეთი",
+      "nameEn": "Ozurgeti",
+      "location": "41.9208048,41.99313280000001"
+    },
+    {
+      "nameKa": "ონი",
+      "nameEn": "Oni",
+      "location": "42.5779358,43.43508880000002"
+    },
+    {
+      "nameKa": "რუსთავი",
+      "nameEn": "Rustavi",
+      "location": "41.5225612,45.04303690000006"
+    },
+    {
+      "nameKa": "საგარეჯო",
+      "nameEn": "Sagarejo",
+      "location": "41.725392,45.33507910000003"
+    },
+    {
+      "nameKa": "სამტრედია",
+      "nameEn": "Samtredia",
+      "location": "42.1599257,42.33676779999996"
+    },
+    {
+      "nameKa": "საჩხერე",
+      "nameEn": "Sachkhere",
+      "location": "42.3420079,43.41060449999998"
+    },
+    {
+      "nameKa": "სენაკი",
+      "nameEn": "Senaki",
+      "location": "42.2701283,42.04567080000004"
+    },
+    {
+      "nameKa": "სიღნაღი",
+      "nameEn": "Sighnaghi",
+      "location": "41.6111031,45.92714360000002"
+    },
+    {
+      "nameKa": "ტყიბული",
+      "nameEn": "Tkibuli",
+      "location": "42.34141229999999,42.994163999999955"
+    },
+    {
+      "nameKa": "ფოთი",
+      "nameEn": "Poti",
+      "location": "42.1582596,41.671370000000024"
+    },
+    {
+      "nameKa": "ქარელი",
+      "nameEn": "Kareli",
+      "location": "22.9285907,79.06168079999998"
+    },
+    {
+      "nameKa": "ქობულეთი",
+      "nameEn": "Kobuleti",
+      "location": "41.815997,41.78381009999998"
+    },
+    {
+      "nameKa": "ქუთაისი",
+      "nameEn": "Kutaisi",
+      "location": "42.2488567,42.69421460000001"
+    },
+    {
+      "nameKa": "ყვარელი",
+      "nameEn": "Kvareli",
+      "location": "41.9483514,45.814791900000046"
+    },
+    {
+      "nameKa": "ცაგერი",
+      "nameEn": "Tsageri",
+      "location": "42.6482211,42.76488599999993"
+    },
+    {
+      "nameKa": "წალენჯიხა",
+      "nameEn": "Tsalenjikha",
+      "location": "42.6215005,42.066009699999995"
+    },
+    {
+      "nameKa": "წალკა",
+      "nameEn": "Tsalka",
+      "location": "41.5979563,44.094688099999985"
+    },
+    {
+      "nameKa": "წნორი",
+      "nameEn": "Tsnori",
+      "location": "41.6159762,45.97037249999994"
+    },
+    {
+      "nameKa": "წყალტუბო",
+      "nameEn": "Tskaltubo",
+      "location": "42.3284986,42.60036820000005"
+    },
+    {
+      "nameKa": "ჭიათურა",
+      "nameEn": "Chiatura",
+      "location": "42.29039059999999,43.28110779999997"
+    },
+    {
+      "nameKa": "ხაშური",
+      "nameEn": "Khashuri",
+      "location": "41.9837685,43.58659469999998"
+    },
+    {
+      "nameKa": "ხობი",
+      "nameEn": "Khobi",
+      "location": "42.3195285,41.89999339999997"
+    },
+    {
+      "nameKa": "ხონი",
+      "nameEn": "Khoni",
+      "location": "42.31488239999999,42.41494869999997"
+    },
+    {
+      "nameKa": "ჯვარი",
+      "nameEn": "Jvari",
+      "location": "42.7090813,42.049093099999936"
+    }
+  ]
+}

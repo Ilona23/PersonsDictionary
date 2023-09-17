@@ -23,14 +23,6 @@ namespace Web.Controllers
             _sender = sender;
         }
 
-        //[HttpGet]
-        //[ProducesResponseType(typeof(List<GetPersonsResponse>), StatusCodes.Status200OK)]
-        //public async Task<IActionResult> Persons([FromQuery] GetPersonsQuery request, CancellationToken cancellationToken)
-        //{
-        //    var result = await _mediator.Send(request, cancellationToken);
-        //    return Ok(result);
-        //}
-
         [Route("{id}")]
         [HttpGet]
         [ProducesResponseType(typeof(List<PersonResponse>), StatusCodes.Status200OK)]

@@ -1,7 +1,8 @@
-﻿namespace Domain.Enums;
-
-public enum SortOrder
+﻿namespace Domain.Enums
 {
-    Asc = 0,
-    Desc = 1
+    public enum SortOrder
+    {
+        Asc = 0,
+        Desc = 1
+    }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Resources;
 
-namespace Application.Services;
-
-public class ResourceManagerService : IResourceManagerService
+namespace Application.Services
 {
-    private readonly ResourceManager _resourceManager;
-
-    public ResourceManagerService(ResourceManager resourceManager)
+    public class ResourceManagerService : IResourceManagerService
     {
-        _resourceManager = resourceManager;
-    }
+        private readonly ResourceManager _resourceManager;
 
-    public string GetString(string name)
-    {
-        //return _resourceManager.GetString(name, CultureInfo.CurrentCulture);
-        return _resourceManager.GetString(name);
+        public ResourceManagerService(ResourceManager resourceManager)
+        {
+            _resourceManager = resourceManager;
+        }
+
+        public string GetString(string name)
+        {
+            //return _resourceManager.GetString(name, CultureInfo.CurrentCulture);
+            return _resourceManager.GetString(name);
+        }
     }
 }

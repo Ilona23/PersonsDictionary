@@ -1,9 +1,10 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Models;
-
-public class PhoneNumberModel
+namespace Domain.Models
 {
-    public string Number { get; set; }
-    public PhoneNumberType NumberType { get; set; }
+    public class PhoneNumberModel
+    {
+        public string Number { get; set; }
+        public PhoneNumberType NumberType { get; set; }
+    }
 }

@@ -60,9 +60,8 @@ builder.Services.AddFluentValidation(x =>
 });
 var app = builder.Build();
 
-using var scope = app.Services.CreateScope();
-var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-DbInitializer.Seed(dbContext);
+var dbInitializer = new DbInitializer();
+await new DbInitializer().Seed(app.Services);
 
 app.UseErrorHandlingMiddleware();
 app.UseMiddleware<AcceptLanguageMiddleware>();

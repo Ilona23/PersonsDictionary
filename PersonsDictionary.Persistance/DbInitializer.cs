@@ -1,51 +1,119 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
+using Persons.Directory.Application.Models;
+using System.Text.Json;
 
 namespace Persistance
 {
-    public static class DbInitializer
+    public class DbInitializer
     {
-        public static void Seed(ApplicationDbContext context)
+        public async Task Seed(IServiceProvider serviceProvider)
         {
-            //if (context.Persons.Any())
-            //{
-            //    return;
-            //}
+            using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
-            var persons = new List<Person>
+            var persons = PersonsData();
+
+            var existingIds = await _dbContext.Persons.Select(p => p.PersonalId).ToListAsync();
+            var personsToAdd = persons.Where(p => !existingIds.Contains(p.PersonalId)).ToList();
+
+            if (personsToAdd.Any())
+            {
+                await _dbContext.Persons.AddRangeAsync(personsToAdd);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            var citiesList = await _dbContext.Cities.ToListAsync();
+
+            if (!citiesList.Any())
+            {
+                using var jsonStream = File.OpenRead("Cities.json");
+
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                var result = await JsonSerializer.DeserializeAsync<CityListModel>(jsonStream, options);
+
+                result.Cities.ForEach(x => x.SetCreateDate());
+
+                await _dbContext.Cities.AddRangeAsync(result.Cities);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static IEnumerable<Person> PersonsData()
+        {
+            return new List<Person>
             {
                 new Person
                 {
-                    FirstName = "Ilona",
-                    LastName = "Ashkhatoeva",
-                    PersonalId = "01001074738",
-                    BirthDate = new DateTime(1991, 11, 23),
-                    CityId = 1,
-                    Gender = Gender.Female,
-                },
-                new Person
-                {
-                    FirstName = "Alex",
-                    LastName = "Ashkhatoeva",
-                    PersonalId = "01001074739",
-                    BirthDate = new DateTime(1991, 11, 23),
+                    FirstName = "John",
+                    LastName = "Smith",
+                    PersonalId = "123456789",
+                    BirthDate = new DateTime(1985, 10, 15),
                     CityId = 1,
                     Gender = Gender.Male,
+                    PhoneNumbers = new List<PhoneNumber>
+                    {
+                        new PhoneNumber { Number = "555-123-4567" },
+                        new PhoneNumber { Number = "555-987-6543" }
+                    }
                 },
                 new Person
                 {
-                    FirstName = "Liza",
-                    LastName = "Bars",
-                    PersonalId = "01001074737",
-                    BirthDate = new DateTime(1991, 11, 23),
-                    CityId = 1,
+                    FirstName = "Alice",
+                    LastName = "Johnson",
+                    PersonalId = "987654321",
+                    BirthDate = new DateTime(1990, 5, 25),
+                    CityId = 2,
                     Gender = Gender.Female,
+                    PhoneNumbers = new List<PhoneNumber>
+                    {
+                        new PhoneNumber { Number = "555-555-5555" }
+                    }
                 },
+                new Person
+                {
+                    FirstName = "Michael",
+                    LastName = "Brown",
+                    PersonalId = "456789012",
+                    BirthDate = new DateTime(1982, 8, 8),
+                    CityId = 3,
+                    Gender = Gender.Male,
+                    PhoneNumbers = new List<PhoneNumber>
+                    {
+                        new PhoneNumber { Number = "555-888-8888" }
+                    }
+                },
+                new Person
+                {
+                    FirstName = "Emily",
+                    LastName = "Davis",
+                    PersonalId = "234567890",
+                    BirthDate = new DateTime(1995, 3, 20),
+                    CityId = 4,
+                    Gender = Gender.Female,
+                    PhoneNumbers = new List<PhoneNumber>
+                    {
+                        new PhoneNumber { Number = "555-999-9999" }
+                    }
+                },
+                new Person
+                {
+                    FirstName = "David",
+                    LastName = "Wilson",
+                    PersonalId = "345678901",
+                    BirthDate = new DateTime(1988, 12, 10),
+                    CityId = 5,
+                    Gender = Gender.Male,
+                    PhoneNumbers = new List<PhoneNumber>
+                    {
+                        new PhoneNumber { Number = "555-777-7777" },
+                        new PhoneNumber { Number = "555-222-2222" }
+                    }
+                }
             };
-
-            context.Persons.AddRange(persons);
-            context.SaveChanges();
         }
     }
 }

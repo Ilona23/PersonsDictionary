@@ -53,11 +53,9 @@ public class UpdatePersonCommandValidation : AbstractValidator<UpdatePersonComma
             });
 
     }
+
     private string GetResourceString(string key)
     {
         return _resourceManagerService.GetString(key);
     }
 }
-
-
-

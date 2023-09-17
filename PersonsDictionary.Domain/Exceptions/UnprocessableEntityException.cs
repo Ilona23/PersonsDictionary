@@ -1,13 +1,14 @@
 ﻿using FluentValidation.Results;
 
-namespace Domain.Exceptions;
-
-public class UnprocessableEntityException : Exception
+namespace Domain.Exceptions
 {
-    public ValidationResult ValidationResult { get; set; }
-
-    public UnprocessableEntityException(string message, ValidationResult validationResult) : base(message)
+    public class UnprocessableEntityException : Exception
     {
-        ValidationResult = validationResult;
+        public ValidationResult ValidationResult { get; set; }
+
+        public UnprocessableEntityException(string message, ValidationResult validationResult) : base(message)
+        {
+            ValidationResult = validationResult;
+        }
     }
 }

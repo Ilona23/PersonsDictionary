@@ -8,6 +8,7 @@ namespace Application.Persons.Queries.GetPersonById
     public class GetPersonsRelationsHandler : IRequestHandler<GetPersonsRelationsQuery, IQueryable<PersonsRelationsModel>>
     {
         private readonly IPersonRepository _repository;
+
         public GetPersonsRelationsHandler(IPersonRepository repository)
         {
             _repository = repository;

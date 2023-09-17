@@ -1,7 +1,8 @@
 ﻿using MediatR;
 
-namespace Application.Abstractions.Messaging;
-
-public interface IQuery<out TResult> : IRequest<TResult>
+namespace Application.Abstractions.Messaging
 {
+    public interface IQuery<out TResult> : IRequest<TResult>
+    {
+    }
 }

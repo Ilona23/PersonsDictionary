@@ -16,7 +16,7 @@ namespace Web.Middlewares
                 appError.Run(async context =>
                 {
                     bool fillDefaultResponse = true;
-                    bool writeReponseBody = true;
+                    bool writeResponseBody = true;
 
                     int code = (int)HttpStatusCode.InternalServerError;
 
@@ -27,21 +27,17 @@ namespace Web.Middlewares
 
                     Log.Error(exception, exception.Message);
 
-                    if (exception is HttpException)
+                    if (exception is HttpException httpException)
                     {
-                        HttpException? httpException = exception as HttpException;
-
                         code = (int)httpException.Code;
 
                         if (code < 300)
                         {
-                            writeReponseBody = false;
+                            writeResponseBody = false;
                         }
                     }
-                    else if (exception is BadRequestException)
+                    else if (exception is BadRequestException badRequestException)
                     {
-                        BadRequestException? badRequestException = exception as BadRequestException;
-
                         code = (int)HttpStatusCode.BadRequest;
 
                         if (badRequestException.ShowMessage)
@@ -52,10 +48,8 @@ namespace Web.Middlewares
                             fillDefaultResponse = false;
                         }
                     }
-                    else if (exception is NotFoundException)
+                    else if (exception is NotFoundException notFoundException)
                     {
-                        NotFoundException? notFoundException = exception as NotFoundException;
-
                         code = (int)HttpStatusCode.NotFound;
 
                         if (notFoundException.ShowMessage)
@@ -66,18 +60,14 @@ namespace Web.Middlewares
                             fillDefaultResponse = false;
                         }
                     }
-                    else if (exception is UnprocessableEntityException)
+                    else if (exception is UnprocessableEntityException unprocessableEntityException)
                     {
-                        UnprocessableEntityException? unprocessableEntityException = exception as UnprocessableEntityException;
-
                         foreach (FluentValidation.Results.ValidationFailure? item in unprocessableEntityException.ValidationResult.Errors)
                         {
-                            if (response.Details.ContainsKey(item.PropertyName))
+                            if (!response.Details.ContainsKey(item.PropertyName))
                             {
-                                continue;
+                                response.Details.Add(item.PropertyName, item.ErrorMessage);
                             }
-
-                            response.Details.Add(item.PropertyName, item.ErrorMessage);
                         }
 
                         code = (int)HttpStatusCode.UnprocessableEntity;
@@ -96,7 +86,7 @@ namespace Web.Middlewares
                     context.Response.ContentType = "application/json";
                     context.Response.StatusCode = code;
 
-                    if (writeReponseBody)
+                    if (writeResponseBody)
                     {
                         await context.Response.WriteAsync(response.ToString());
                     }

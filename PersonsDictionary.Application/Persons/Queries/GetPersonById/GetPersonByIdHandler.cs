@@ -23,7 +23,7 @@ namespace Application.Persons.Queries.GetPersonById
 
         public async Task<PersonResponse> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetAsync(request.Id);
+            var person = await _repository.GetPersonByIdAsync(request.Id);
 
             if (person is null)
             {
