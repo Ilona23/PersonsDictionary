@@ -9,6 +9,9 @@ using Application.Persons.Commands.UpdatePerson;
 using Application.Persons.Commands.UpdatePersonImage;
 using Application.Persons.Queries.GetPersonById;
 using System.ComponentModel.DataAnnotations;
+using Application.Persons.Queries.GetPersons;
+using Domain.Entities;
+using Domain.Abstractions;
 
 namespace Web.Controllers
 {
@@ -93,6 +96,14 @@ namespace Web.Controllers
         {
             var query = new DeleteRelatedPersonCommand { PersonId = personId, RelatedPersonId = relatedPersonId };
             Unit result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(PagedResult<Person>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPersons([FromQuery] GetPersonsSearchQuery request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request, cancellationToken);
             return Ok(result);
         }
     }

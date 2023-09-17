@@ -14,21 +14,20 @@ using Application.Abstractions.Messaging;
 using Web.Middlewares;
 using System.Text.Json.Serialization;
 using Domain.Mapping;
-using Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
 var presentationAssembly = typeof(AssemblyReference).Assembly;
 
 builder.Services.AddControllers(options =>
-    {
-        options.Filters.Add(typeof(ValidationActionFilter));
-    })
-    .AddApplicationPart(presentationAssembly)
-    .AddDataAnnotationsLocalization()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+{
+    options.Filters.Add(typeof(ValidationActionFilter));
+})
+.AddApplicationPart(presentationAssembly)
+.AddDataAnnotationsLocalization()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -54,14 +53,15 @@ builder.Services.AddFluentValidation(x =>
 {
     x.ImplicitlyValidateChildProperties = true;
     x.RegisterValidatorsFromAssemblies(new Assembly[]
-        {
-           typeof(ICommand<>).Assembly
-        });
+    {
+        typeof(ICommand<>).Assembly
+    });
 });
+
 var app = builder.Build();
 
 var dbInitializer = new DbInitializer();
-await new DbInitializer().Seed(app.Services);
+await new DbInitializer().Seed(app.Services, CancellationToken.None);
 
 app.UseErrorHandlingMiddleware();
 app.UseMiddleware<AcceptLanguageMiddleware>();

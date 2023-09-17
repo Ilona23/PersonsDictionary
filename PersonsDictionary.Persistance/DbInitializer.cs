@@ -6,11 +6,11 @@ using Persistence.Data;
 using Persons.Directory.Application.Models;
 using System.Text.Json;
 
-namespace Persistance
+namespace Persistence
 {
     public class DbInitializer
     {
-        public async Task Seed(IServiceProvider serviceProvider)
+        public async Task Seed(IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
             using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var _dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
@@ -23,10 +23,10 @@ namespace Persistance
             if (personsToAdd.Any())
             {
                 await _dbContext.Persons.AddRangeAsync(personsToAdd);
-                await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
 
-            var citiesList = await _dbContext.Cities.ToListAsync();
+            var citiesList = await _dbContext.Cities.ToListAsync(cancellationToken);
 
             if (!citiesList.Any())
             {
@@ -37,8 +37,8 @@ namespace Persistance
 
                 result.Cities.ForEach(x => x.SetCreateDate());
 
-                await _dbContext.Cities.AddRangeAsync(result.Cities);
-                await _dbContext.SaveChangesAsync();
+                await _dbContext.Cities.AddRangeAsync(result.Cities, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
         }
 

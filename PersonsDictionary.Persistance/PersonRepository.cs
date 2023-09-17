@@ -23,11 +23,10 @@ namespace Persistence
         public async Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Persons
-                //.AsNoTracking()
                 .Include(x => x.RelatedToPersons)
-                    .ThenInclude(x1 => x1.Person)
+                .ThenInclude(x1 => x1.Person)
                 .Include(x => x.RelatedPersons)
-                    .ThenInclude(x2 => x2.RelatedPerson)
+                .ThenInclude(x2 => x2.RelatedPerson)
                 .Include(x => x.PhoneNumbers)
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
@@ -97,6 +96,56 @@ namespace Persistence
                 });
 
             return Task.FromResult(query);
+        }
+
+        public async Task<PagedResult<Person>> SearchPersonsAsync(string QuickSearch,
+            string FirstName,
+            string LastName,
+            string PersonalId,
+            int Page,
+            int PageSize,
+            CancellationToken cancellationToken = default)
+        {
+            var query = _dbContext.Persons.AsQueryable();
+
+            if (!string.IsNullOrEmpty(QuickSearch))
+            {
+                query = query.Where(p =>
+                    EF.Functions.Like(p.FirstName, $"%{QuickSearch}%") ||
+                    EF.Functions.Like(p.LastName, $"%{QuickSearch}%") ||
+                    EF.Functions.Like(p.PersonalId, $"%{QuickSearch}%")
+                );
+            }
+
+            if (!string.IsNullOrEmpty(FirstName))
+            {
+                query = query.Where(p => p.FirstName.Contains(FirstName));
+            }
+
+            if (!string.IsNullOrEmpty(LastName))
+            {
+                query = query.Where(p => p.LastName.Contains(LastName));
+            }
+
+            if (!string.IsNullOrEmpty(PersonalId))
+            {
+                query = query.Where(p => p.PersonalId.Contains(PersonalId));
+            }
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            query = query.Skip((Page - 1) * PageSize)
+                         .Take(PageSize);
+
+            var results = await query.ToListAsync(cancellationToken);
+
+            return new PagedResult<Person>
+            {
+                TotalCount = totalCount,
+                Page = Page,
+                PageSize = PageSize,
+                Results = results
+            };
         }
     }
 }

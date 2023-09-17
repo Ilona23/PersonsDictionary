@@ -20,5 +20,14 @@ namespace Domain.Abstractions
         void Delete(Person entity);
 
         Task<IQueryable<PersonsRelationsModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken);
+
+        Task<PagedResult<Person>> SearchPersonsAsync(
+            string QuickSearch,
+            string FirstName,
+            string LastName,
+            string PersonalId,
+            int Page,
+            int PageSize,
+            CancellationToken cancellationToken);
     }
 }

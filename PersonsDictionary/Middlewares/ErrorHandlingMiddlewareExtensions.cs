@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.WebUtilities;
+﻿using Application;
 using Domain.Exceptions;
-using Application;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.WebUtilities;
 using Serilog;
 using System.Net;
 
@@ -15,15 +15,15 @@ namespace Web.Middlewares
             {
                 appError.Run(async context =>
                 {
-                    bool fillDefaultResponse = true;
-                    bool writeResponseBody = true;
+                    var fillDefaultResponse = true;
+                    var writeReponseBody = true;
 
-                    int code = (int)HttpStatusCode.InternalServerError;
+                    var code = (int)HttpStatusCode.InternalServerError;
 
-                    FailedRequestResponse response = new FailedRequestResponse();
+                    var response = new FailedRequestResponse();
 
-                    IExceptionHandlerPathFeature? exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-                    Exception exception = exceptionHandlerPathFeature.Error;
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    var exception = exceptionHandlerPathFeature.Error;
 
                     Log.Error(exception, exception.Message);
 
@@ -33,7 +33,7 @@ namespace Web.Middlewares
 
                         if (code < 300)
                         {
-                            writeResponseBody = false;
+                            writeReponseBody = false;
                         }
                     }
                     else if (exception is BadRequestException badRequestException)
@@ -62,17 +62,19 @@ namespace Web.Middlewares
                     }
                     else if (exception is UnprocessableEntityException unprocessableEntityException)
                     {
-                        foreach (FluentValidation.Results.ValidationFailure? item in unprocessableEntityException.ValidationResult.Errors)
+                        foreach (var item in unprocessableEntityException.ValidationResult.Errors)
                         {
-                            if (!response.Details.ContainsKey(item.PropertyName))
+                            if (response.Details.ContainsKey(item.PropertyName))
                             {
-                                response.Details.Add(item.PropertyName, item.ErrorMessage);
+                                continue;
                             }
+
+                            response.Details.Add(item.PropertyName, item.ErrorMessage);
                         }
 
                         code = (int)HttpStatusCode.UnprocessableEntity;
                     }
-                    else if (exception is ArgumentNullException && exception.Source == "MediatR")
+                    else if (exception is ArgumentNullException argumentNullException && exception.Source == "MediatR")
                     {
                         code = (int)HttpStatusCode.BadRequest;
                     }
@@ -86,7 +88,7 @@ namespace Web.Middlewares
                     context.Response.ContentType = "application/json";
                     context.Response.StatusCode = code;
 
-                    if (writeResponseBody)
+                    if (writeReponseBody)
                     {
                         await context.Response.WriteAsync(response.ToString());
                     }
