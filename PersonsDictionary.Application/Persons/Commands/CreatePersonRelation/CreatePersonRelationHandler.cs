@@ -31,7 +31,7 @@ namespace Application.Persons.Commands.CreatePersonRelation
                 throw new NotFoundException(string.Format(message, request.PersonId), true);
             }
 
-            var relatedPerson = await _repository.GetPersonByIdDetailedAsync(request.RelatedPersonId, cancellationToken);
+            var relatedPerson = await _repository.GetPersonByIdAsync(request.RelatedPersonId, cancellationToken);
             if (relatedPerson is null)
             {
                 var message = _resourceManagerService.GetString(ValidationMessages.RelatedPersonNotFoundById);

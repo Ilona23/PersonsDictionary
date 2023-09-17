@@ -27,6 +27,7 @@ namespace Persistence.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+            optionsBuilder.UseLazyLoadingProxies();
         }
     }
 }

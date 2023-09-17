@@ -49,7 +49,7 @@ namespace Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(FailedRequestResponse), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateRelationship([FromBody] CreatePersonRelationCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateRelation([FromBody] CreatePersonRelationCommand request, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(request, cancellationToken);
             return Ok(result);
