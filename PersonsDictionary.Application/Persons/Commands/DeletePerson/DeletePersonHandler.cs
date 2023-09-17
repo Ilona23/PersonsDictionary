@@ -23,7 +23,7 @@ namespace Application.Persons.Commands.DeletePerson
 
         public async Task<Unit> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetAsync(request.Id);
+            var person = await _repository.GetPersonByIdAsync(request.Id, cancellationToken);
 
             if (person is null)
             {

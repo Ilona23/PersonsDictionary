@@ -14,9 +14,9 @@ namespace Web.Middlewares
 
         public async Task InvokeAsync(HttpContext context, IOptions<RequestLocalizationOptions> options)
         {
-            IList<CultureInfo>? supportedCultures = options.Value.SupportedCultures;
-            CultureInfo defaultCulture = options.Value.DefaultRequestCulture.Culture;
-            string[] userLanguages = context.Request.Headers["Accept-Language"].ToString().Split(',');
+            var supportedCultures = options.Value.SupportedCultures;
+            var defaultCulture = options.Value.DefaultRequestCulture.Culture;
+            var userLanguages = context.Request.Headers["Accept-Language"].ToString().Split(',');
 
             CultureInfo culture = defaultCulture;
 
@@ -26,7 +26,7 @@ namespace Web.Middlewares
                 {
                     try
                     {
-                        CultureInfo cultureInfo = CultureInfo.GetCultureInfo(userLanguage.Trim());
+                        var cultureInfo = CultureInfo.GetCultureInfo(userLanguage.Trim());
                         if (supportedCultures.Contains(cultureInfo))
                         {
                             culture = cultureInfo;

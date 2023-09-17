@@ -24,7 +24,7 @@ namespace Application.Persons.Commands.UpdatePerson
 
         public async Task<Unit> Handle(UpdatePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetPersonByIdAsync(request.Id);
+            var person = await _repository.GetPersonByIdAsync(request.Id, cancellationToken);
 
             if (person is null)
             {

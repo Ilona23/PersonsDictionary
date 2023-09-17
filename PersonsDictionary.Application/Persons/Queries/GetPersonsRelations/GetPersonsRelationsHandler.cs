@@ -16,7 +16,7 @@ namespace Application.Persons.Queries.GetPersonById
 
         public async Task<IQueryable<PersonsRelationsModel>> Handle(GetPersonsRelationsQuery request, CancellationToken cancellationToken)
         {
-            var result = await _repository.GetPersonsRelationsAsync();
+            var result = await _repository.GetPersonsRelationsAsync(cancellationToken);
 
             return result;
         }

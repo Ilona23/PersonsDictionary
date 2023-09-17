@@ -1,26 +1,24 @@
 ﻿using Domain.Entities;
 using Domain.Models;
-using System.Linq.Expressions;
 
 namespace Domain.Abstractions
 {
     public interface IPersonRepository
     {
-        Task<Person> GetAsync(int id);
-        Task<Person> GetPersonByIdAsync(int id);
+        Task<Person> GetPersonByIdAsync(int id, CancellationToken cancellationToken);
 
-        void Delete(Person entity);
+        Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken);
 
-        Task InsertAsync(Person entity);
+        Task<Person> GetPersonByPersonalIdAsync(string personalId, CancellationToken cancellationToken);
+
+        Task<List<Person>> GetPersonsAsync(CancellationToken cancellationToken);
+
+        Task InsertAsync(Person entity, CancellationToken cancellationToken);
 
         Task UpdateAsync(Person entity);
 
-        Task<IDictionary<int, Person>> ToDictionaryAsync();
+        void Delete(Person entity);
 
-        Task<Person> FirstOrDefaultAsync(Expression<Func<Person, bool>>? expression = null);
-
-        Task<IQueryable<PersonsRelationsModel>> GetPersonsRelationsAsync();
-
-        Task<IQueryable<Person>> QueryAsync(Expression<Func<Person, bool>>? expression = null);
+        Task<IQueryable<PersonsRelationsModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken);
     }
 }

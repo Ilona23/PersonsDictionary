@@ -20,7 +20,7 @@ namespace Application.Persons.Commands.UpdatePersonImage
 
         public async Task<Unit> Handle(UploadPersonImageCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetAsync(request.Id);
+            var person = await _repository.GetPersonByIdAsync(request.Id, cancellationToken);
 
             if (person is null)
             {
@@ -61,7 +61,7 @@ namespace Application.Persons.Commands.UpdatePersonImage
             }
 
             using FileStream stream = new FileStream(path, FileMode.Create);
-            await request.File.CopyToAsync(stream);
+            await request.File.CopyToAsync(stream, cancellationToken);
 
             return new Unit();
         }

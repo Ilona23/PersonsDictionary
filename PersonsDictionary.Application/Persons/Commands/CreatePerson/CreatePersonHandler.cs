@@ -22,7 +22,7 @@ namespace Application.Persons.Commands.CreatePerson
 
         public async Task<Unit> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
         {
-            var existingPerson = await _repository.FirstOrDefaultAsync(x => x.PersonalId == request.PersonalId);
+            var existingPerson = await _repository.GetPersonByPersonalIdAsync(request.PersonalId, cancellationToken);
             if (existingPerson != null)
             {
                 throw new HttpException($"Person with PersonalId: {request.PersonalId} already exists.", HttpStatusCode.AlreadyReported);
@@ -30,7 +30,7 @@ namespace Application.Persons.Commands.CreatePerson
 
             var person = _DTOToEntityMapper.ConvertDTOToEntity(request);
 
-            await _repository.InsertAsync(person);
+            await _repository.InsertAsync(person, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return new Unit();

@@ -3,7 +3,6 @@ using Domain.Entities;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
-using System.Linq.Expressions;
 
 namespace Persistence
 {
@@ -16,25 +15,36 @@ namespace Persistence
             _dbContext = context;
         }
 
-        public async Task<Person> GetAsync(int id)
+        public async Task<Person> GetPersonByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Persons.FirstOrDefaultAsync(user => user.Id == id);
+            return await _dbContext.Persons.FindAsync(id, cancellationToken);
         }
 
-        public async Task<Person> GetPersonByIdAsync(int id)
+        public async Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Persons
+                //.AsNoTracking()
                 .Include(x => x.RelatedToPersons)
-                .ThenInclude(x1 => x1.Person)
+                    .ThenInclude(x1 => x1.Person)
                 .Include(x => x.RelatedPersons)
-                .ThenInclude(x2 => x2.RelatedPerson)
+                    .ThenInclude(x2 => x2.RelatedPerson)
                 .Include(x => x.PhoneNumbers)
-                .Where(x => x.Id == id).SingleAsync();
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task InsertAsync(Person entity)
+        public async Task<Person> GetPersonByPersonalIdAsync(string personId, CancellationToken cancellationToken = default)
         {
-            await _dbContext.Persons.AddAsync(entity);
+            return await _dbContext.Persons.AsNoTracking().FirstOrDefaultAsync(x => x.PersonalId == personId, cancellationToken);
+        }
+
+        public async Task<List<Person>> GetPersonsAsync(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Persons.AsNoTracking().ToListAsync(cancellationToken);
+        }
+
+        public async Task InsertAsync(Person entity, CancellationToken cancellationToken = default)
+        {
+            await _dbContext.Persons.AddAsync(entity, cancellationToken);
         }
 
         public Task UpdateAsync(Person entity)
@@ -56,34 +66,10 @@ namespace Persistence
             _dbContext.Persons.Remove(entity);
         }
 
-        public async Task<IDictionary<int, Person>> ToDictionaryAsync()
+        public Task<IQueryable<PersonsRelationsModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Persons.ToDictionaryAsync(x => x.Id);
-        }
-
-        public async Task<Person> FirstOrDefaultAsync(Expression<Func<Person, bool>>? expression = null)
-        {
-            if (expression is null)
-            {
-                return await _dbContext.Persons.FirstOrDefaultAsync();
-            }
-
-            return await _dbContext.Persons.FirstOrDefaultAsync(expression);
-        }
-
-        public async Task<IQueryable<Person>> QueryAsync(Expression<Func<Person, bool>>? expression = null)
-        {
-            if (expression == null)
-            {
-                return _dbContext.Persons;
-            }
-
-            return _dbContext.Persons.Where(expression);
-        }
-
-        public async Task<IQueryable<PersonsRelationsModel>> GetPersonsRelationsAsync()
-        {
-            var relatedPersons = _dbContext.PersonRelations
+            var query = _dbContext.PersonRelations
+                .AsNoTracking()
                 .Include(p => p.Person)
                 .GroupBy(x => new
                 {
@@ -98,26 +84,19 @@ namespace Persistence
                     c.Key,
                     Count = c.Count()
                 })
-                .Select(s => new
+                .OrderBy(m => m.Key.PersonId)
+                .ThenBy(m => m.Key.RelationType)
+                .Select(s => new PersonsRelationsModel
                 {
-                    s.Key.PersonId,
-                    s.Key.RelationType,
-                    s.Count,
-                    s.Key.FirstName,
-                    s.Key.LastName,
-                    s.Key.Gender
-                })
-                .Select(m => new PersonsRelationsModel
-                {
-                    Id = m.PersonId,
-                    FirstName = m.FirstName,
-                    LastName = m.LastName,
-                    Gender = m.Gender,
-                    RelationType = m.RelationType,
-                    Count = m.Count,
+                    Id = s.Key.PersonId,
+                    FirstName = s.Key.FirstName,
+                    LastName = s.Key.LastName,
+                    Gender = s.Key.Gender,
+                    RelationType = s.Key.RelationType,
+                    Count = s.Count
                 });
 
-            return relatedPersons;
+            return Task.FromResult(query);
         }
     }
 }

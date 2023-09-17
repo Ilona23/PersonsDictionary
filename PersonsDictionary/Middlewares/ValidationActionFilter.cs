@@ -10,12 +10,12 @@ namespace Web.Middlewares
         {
             if (!context.ModelState.IsValid)
             {
-                Dictionary<string, List<string>> errors = context.ModelState.ToDictionary(
+                var errors = context.ModelState.ToDictionary(
                     kvp => kvp.Key,
                     kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()
                 );
 
-                BadRequestResponse response = new BadRequestResponse("One or more validation errors occurred.");
+                var response = new BadRequestResponse("One or more validation errors occurred.");
 
                 context.Result = new BadRequestObjectResult(new
                 {
