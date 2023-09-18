@@ -17,7 +17,6 @@ using Serilog;
 using Domain.Entities;
 using Application.Mapping;
 using Application.Models;
-using Application.Abstractions.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 var presentationAssembly = typeof(AssemblyReference).Assembly;
@@ -68,16 +67,14 @@ builder.Services.AddFluentValidation(x =>
 var app = builder.Build();
 
 var dbInitializer = new DbInitializer();
-await new DbInitializer().Seed(app.Services, CancellationToken.None);
+await dbInitializer.Seed(app.Services, CancellationToken.None);
 
 app.UseMiddleware<AcceptLanguageMiddleware>();
 app.UseMiddleware<ErrorLoggingMiddleware>();
 
-
 var configuration = new ConfigurationBuilder()
-           .AddJsonFile("appsettings." +
-           "json")
-           .Build();
+   .AddJsonFile("appsettings.json")
+   .Build();
 var logFilePath = Path.Combine(Directory.GetCurrentDirectory(), configuration["Logging:File:Path"]);
 
 Log.Logger = new LoggerConfiguration()
@@ -85,7 +82,6 @@ Log.Logger = new LoggerConfiguration()
     .Configuration(builder.Configuration)
     .WriteTo.File(logFilePath)
     .CreateLogger();
-
 
 if (app.Environment.IsDevelopment())
 {

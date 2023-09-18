@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Domain.Abstractions;
-using Application.Persons.Queries.GetPersons;
 using Domain.Models;
 
 namespace Application.Persons.Queries.GetPersonsRelations

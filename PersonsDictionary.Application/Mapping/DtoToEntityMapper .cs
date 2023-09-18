@@ -2,7 +2,7 @@
 using Application.Persons.Commands.CreatePerson;
 using Domain.Entities;
 
-namespace Application.Abstractions.Mapping
+namespace Application.Mapping
 {
     public class DtoToEntityMapper : IDtoToEntityMapper
     {
