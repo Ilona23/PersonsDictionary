@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Models
+namespace Application.Models
 {
     public class PhoneNumberModel
     {

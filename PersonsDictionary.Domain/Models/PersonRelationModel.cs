@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class PersonsRelationsModel
+    public class PersonRelationModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

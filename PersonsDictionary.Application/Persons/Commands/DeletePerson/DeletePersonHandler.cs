@@ -6,7 +6,7 @@ using Domain.Abstractions;
 
 namespace Application.Persons.Commands.DeletePerson
 {
-    public class DeletePersonHandler : IRequestHandler<DeletePersonCommand, Unit>
+    public class DeletePersonHandler : IRequestHandler<DeletePersonCommand, DeletePersonResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonRepository _repository;
@@ -21,9 +21,9 @@ namespace Application.Persons.Commands.DeletePerson
             _resourceManagerService = resourceManagerService;
         }
 
-        public async Task<Unit> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
+        public async Task<DeletePersonResponse> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetPersonByIdAsync(request.Id, cancellationToken);
+            var person = await _repository.GetPersonByIdDetailedAsync(request.Id, cancellationToken);
 
             if (person is null)
             {
@@ -32,16 +32,9 @@ namespace Application.Persons.Commands.DeletePerson
             }
 
             _repository.Delete(person);
-            try
-            {
-                await _unitOfWork.CommitAsync(cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                // Handle or log the exception
-            }
 
-            return new Unit();
+            await _unitOfWork.CommitAsync(cancellationToken);
+            return new DeletePersonResponse { Success = false, Message = "Person deleted successfully." };
         }
     }
 }

@@ -3,10 +3,11 @@ using Application.Constants;
 using Domain.Exceptions;
 using Application.Services;
 using Domain.Abstractions;
+using Application.Persons.Commands.DeletePerson;
 
 namespace Application.Persons.Commands.DeleteRelatedPerson
 {
-    public class DeleteRelatedPersonHandler : IRequestHandler<DeleteRelatedPersonCommand, Unit>
+    public class DeleteRelatedPersonHandler : IRequestHandler<DeleteRelatedPersonCommand, DeleteRelatedPersonResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonRepository _repository;
@@ -21,7 +22,7 @@ namespace Application.Persons.Commands.DeleteRelatedPerson
             _resourceManagerService = resourceManagerService;
         }
 
-        public async Task<Unit> Handle(DeleteRelatedPersonCommand request, CancellationToken cancellationToken)
+        public async Task<DeleteRelatedPersonResponse> Handle(DeleteRelatedPersonCommand request, CancellationToken cancellationToken)
         {
             var person = await _repository.GetPersonByIdDetailedAsync(request.PersonId, cancellationToken);
             if (person is null)
@@ -39,7 +40,7 @@ namespace Application.Persons.Commands.DeleteRelatedPerson
 
             person.RelatedPersons.Remove(relatedPerson);
             await _unitOfWork.CommitAsync(cancellationToken);
-            return new Unit();
+            return new DeleteRelatedPersonResponse { Success = false, Message = "Related person deleted successfully." };
         }
     }
 }

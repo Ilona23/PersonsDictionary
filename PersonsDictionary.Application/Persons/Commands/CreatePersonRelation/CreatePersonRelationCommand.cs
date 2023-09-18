@@ -1,11 +1,11 @@
-﻿using MediatR;
-using Domain.Enums;
+﻿using Domain.Enums;
 using Application.Abstractions.Messaging;
+using Application.Models;
 
 namespace Application.Persons.Commands.CreatePersonRelation
 {
     public sealed record CreatePersonRelationCommand(
         int PersonId,
         int RelatedPersonId,
-        RelationType RelatedType) : ICommand<Unit>;
+        RelationType RelatedType) : ICommand<RelatedPersonsModel>;
 }

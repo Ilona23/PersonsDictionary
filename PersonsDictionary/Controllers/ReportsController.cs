@@ -1,4 +1,4 @@
-﻿using Application.Persons.Queries.GetPersons;
+﻿using Application.Persons.Queries.GetPersonsRelations;
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +17,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IQueryable<PersonsRelationsModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IQueryable<PersonRelationModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> RelatedPersons([FromQuery] GetPersonsRelationsQuery request, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(request, cancellationToken);

@@ -1,21 +1,25 @@
-﻿using Domain.Abstractions;
+﻿using Application.Abstractions.Messaging;
+using Application.Models;
+using Domain.Abstractions;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Persons.Queries.GetPersons
 {
-    public class GetPersonsSearchQueryHandler : IRequestHandler<GetPersonsSearchQuery, PagedResult<Person>>
+    public class GetPersonsSearchQueryHandler : IRequestHandler<GetPersonsSearchQuery, PagedResult<PersonDetailedModel>>
     {
         private readonly IPersonRepository _repository;
+        private readonly IMapper<Person, PersonDetailedModel> _personMapper;
 
-        public GetPersonsSearchQueryHandler(IPersonRepository repository)
+        public GetPersonsSearchQueryHandler(IPersonRepository repository, IMapper<Person, PersonDetailedModel> personMapper)
         {
             _repository = repository;
+            _personMapper = personMapper;
         }
 
-        public async Task<PagedResult<Person>> Handle(GetPersonsSearchQuery searchCriteria, CancellationToken cancellationToken)
+        public async Task<PagedResult<PersonDetailedModel>> Handle(GetPersonsSearchQuery searchCriteria, CancellationToken cancellationToken)
         {
-            var result = await _repository.SearchPersonsAsync(
+            var sourcePagedResult = await _repository.SearchPersonsAsync(
                 searchCriteria.QuickSearch,
                 searchCriteria.FirstName,
                 searchCriteria.LastName,
@@ -24,7 +28,15 @@ namespace Application.Persons.Queries.GetPersons
                 searchCriteria.PageSize,
                 cancellationToken);
 
-            return result;
+            var pagedResultPersonModel = new PagedResult<PersonDetailedModel>
+            {
+                TotalCount = sourcePagedResult.TotalCount,
+                Page = sourcePagedResult.Page,
+                PageSize = sourcePagedResult.PageSize,
+                Results = _personMapper.MapToModelList(sourcePagedResult.Results),
+            };
+
+            return pagedResultPersonModel;
         }
     }
 }

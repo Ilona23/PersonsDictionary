@@ -1,8 +1,8 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Models
+namespace Application.Models
 {
-    public class CreatePersonModel
+    public class PersonModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -13,9 +13,11 @@ using System.Reflection;
 using Application.Abstractions.Messaging;
 using Web.Middlewares;
 using System.Text.Json.Serialization;
-using Domain.Mapping;
 using Serilog;
-using Persons.Directory.Application.Middlewares;
+using Domain.Entities;
+using Application.Mapping;
+using Application.Models;
+using Application.Abstractions.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 var presentationAssembly = typeof(AssemblyReference).Assembly;
@@ -41,9 +43,12 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddValidatorsFromAssembly(presentationAssembly);
 builder.Services.AddScoped<ValidationActionFilter>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IDTOToEntityMapper, DTOToEntityMapper>();
+builder.Services.AddScoped<IDtoToEntityMapper, DtoToEntityMapper>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IMapper<Person, PersonModel>, PersonMapper>();
+builder.Services.AddScoped<IMapper<Person, PersonDetailedModel>, PersonDetailedMapper>();
+builder.Services.AddScoped<IMapper<PersonRelation, RelatedPersonsModel>, RelatedPersonsMapper>();
 builder.Services.AddSingleton<IResourceManagerService>(provider =>
 {
     var assembly = presentationAssembly;

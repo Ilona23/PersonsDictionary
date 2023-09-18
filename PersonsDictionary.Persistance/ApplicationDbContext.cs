@@ -22,10 +22,5 @@ namespace Persistence.Data
                        .ApplyConfiguration(new PhoneNumberConfiguration())
                        .ApplyConfiguration(new CityConfiguration());
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }
     }
 }

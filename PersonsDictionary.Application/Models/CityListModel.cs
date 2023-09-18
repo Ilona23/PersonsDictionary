@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Persons.Directory.Application.Models
+namespace Application.Models
 {
     public class CityListModel
     {

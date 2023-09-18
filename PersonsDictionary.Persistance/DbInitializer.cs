@@ -3,8 +3,8 @@ using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
-using Persons.Directory.Application.Models;
 using System.Text.Json;
+using Application.Models;
 
 namespace Persistence
 {

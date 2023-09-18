@@ -4,25 +4,30 @@ using Domain.Exceptions;
 using Domain.Abstractions;
 using Application.Constants;
 using Application.Services;
+using Application.Abstractions.Messaging;
+using Application.Models;
 
 namespace Application.Persons.Commands.CreatePersonRelation
 {
-    public class CreatePersonRelationHandler : IRequestHandler<CreatePersonRelationCommand, Unit>
+    public class CreatePersonRelationHandler : IRequestHandler<CreatePersonRelationCommand, RelatedPersonsModel>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonRepository _repository;
         private readonly IResourceManagerService _resourceManagerService;
+        private readonly IMapper<PersonRelation, RelatedPersonsModel> _relatedPersonsMapper;
 
         public CreatePersonRelationHandler(IPersonRepository repository,
             IUnitOfWork unitOfWork,
-            IResourceManagerService resourceManagerService)
+            IResourceManagerService resourceManagerService,
+            IMapper<PersonRelation, RelatedPersonsModel> relatedPersonsMapper)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _resourceManagerService = resourceManagerService;
+            _relatedPersonsMapper = relatedPersonsMapper;
         }
 
-        public async Task<Unit> Handle(CreatePersonRelationCommand request, CancellationToken cancellationToken)
+        public async Task<RelatedPersonsModel> Handle(CreatePersonRelationCommand request, CancellationToken cancellationToken)
         {
             var person = await _repository.GetPersonByIdDetailedAsync(request.PersonId, cancellationToken);
             if (person is null)
@@ -31,7 +36,7 @@ namespace Application.Persons.Commands.CreatePersonRelation
                 throw new NotFoundException(string.Format(message, request.PersonId), true);
             }
 
-            var relatedPerson = await _repository.GetPersonByIdAsync(request.RelatedPersonId, cancellationToken);
+            var relatedPerson = await _repository.GetPersonByIdDetailedAsync(request.RelatedPersonId, cancellationToken);
             if (relatedPerson is null)
             {
                 var message = _resourceManagerService.GetString(ValidationMessages.RelatedPersonNotFoundById);
@@ -45,7 +50,7 @@ namespace Application.Persons.Commands.CreatePersonRelation
 
             await _unitOfWork.CommitAsync(cancellationToken);
 
-            return new Unit();
+            return _relatedPersonsMapper.MapToModel(personRelation);
         }
     }
 }

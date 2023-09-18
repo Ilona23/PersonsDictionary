@@ -1,12 +1,12 @@
-﻿using Application.Persons.Commands.CreatePerson;
-using Domain.Abstractions;
+﻿using Application.Abstractions.Messaging;
+using Application.Persons.Commands.CreatePerson;
 using Domain.Entities;
 
-namespace Domain.Mapping
+namespace Application.Abstractions.Mapping
 {
-    public class DTOToEntityMapper : IDTOToEntityMapper
+    public class DtoToEntityMapper : IDtoToEntityMapper
     {
-        public Person ConvertDTOToEntity(CreatePersonCommand command)
+        public Person MapToEntity(CreatePersonCommand command)
         {
             var person = new Person
             {

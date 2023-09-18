@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Application.Abstractions.Messaging;
-using Domain.Models;
+﻿using Application.Abstractions.Messaging;
+using Application.Models;
+using Domain.Enums;
 
 namespace Application.Persons.Commands.UpdatePerson
 {
@@ -8,6 +8,9 @@ namespace Application.Persons.Commands.UpdatePerson
         int Id,
         string FirstName,
         string LastName,
+        string PersonalId,
+        DateTime BirthDate,
         int CityId,
-        IEnumerable<UpdatePhoneNumberModel> PhoneNumbers) : ICommand<Unit>;
+        Gender Gender,
+        IEnumerable<UpdatePhoneNumberModel> PhoneNumbers) : ICommand<PersonModel>;
 }

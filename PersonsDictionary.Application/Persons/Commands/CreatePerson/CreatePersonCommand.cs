@@ -1,7 +1,6 @@
-﻿using MediatR;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Models;
 using Domain.Enums;
-using Domain.Models;
 
 namespace Application.Persons.Commands.CreatePerson
 {
@@ -13,5 +12,5 @@ namespace Application.Persons.Commands.CreatePerson
         DateTime BirthDate,
         int CityId,
         Gender Gender,
-        IEnumerable<PhoneNumberModel> PhoneNumbers) : ICommand<Unit>;
+        IEnumerable<PhoneNumberModel> PhoneNumbers) : ICommand<PersonModel>;
 }

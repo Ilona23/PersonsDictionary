@@ -3,9 +3,9 @@ using Domain.Abstractions;
 using Application.Persons.Queries.GetPersons;
 using Domain.Models;
 
-namespace Application.Persons.Queries.GetPersonById
+namespace Application.Persons.Queries.GetPersonsRelations
 {
-    public class GetPersonsRelationsHandler : IRequestHandler<GetPersonsRelationsQuery, IQueryable<PersonsRelationsModel>>
+    public class GetPersonsRelationsHandler : IRequestHandler<GetPersonsRelationsQuery, IQueryable<PersonRelationModel>>
     {
         private readonly IPersonRepository _repository;
 
@@ -14,7 +14,7 @@ namespace Application.Persons.Queries.GetPersonById
             _repository = repository;
         }
 
-        public async Task<IQueryable<PersonsRelationsModel>> Handle(GetPersonsRelationsQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<PersonRelationModel>> Handle(GetPersonsRelationsQuery request, CancellationToken cancellationToken)
         {
             var result = await _repository.GetPersonsRelationsAsync(cancellationToken);
 

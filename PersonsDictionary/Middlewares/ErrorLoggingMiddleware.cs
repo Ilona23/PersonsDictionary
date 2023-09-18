@@ -3,7 +3,7 @@ using Application;
 using Domain.Exceptions;
 using Serilog;
 
-namespace Persons.Directory.Application.Middlewares
+namespace Web.Middlewares
 {
     public class ErrorLoggingMiddleware
     {

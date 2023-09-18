@@ -20,20 +20,15 @@ namespace Persistence
             return await _dbContext.Persons.FindAsync(id, cancellationToken);
         }
 
-        //public async Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken = default)
-        //{
-        //    return await _dbContext.Persons
-        //        .Include(x => x.RelatedToPersons)
-        //        .ThenInclude(x1 => x1.Person)
-        //        .Include(x => x.RelatedPersons)
-        //        .ThenInclude(x2 => x2.RelatedPerson)
-        //        .Include(x => x.PhoneNumbers)
-        //        .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
-        //}
-
         public async Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Persons.FindAsync(id, cancellationToken);
+            return await _dbContext.Persons
+                .Include(x => x.RelatedToPersons)
+                .ThenInclude(x1 => x1.Person)
+                .Include(x => x.RelatedPersons)
+                .ThenInclude(x2 => x2.RelatedPerson)
+                .Include(x => x.PhoneNumbers)
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public async Task<Person> GetPersonByPersonalIdAsync(string personId, CancellationToken cancellationToken = default)
@@ -70,7 +65,7 @@ namespace Persistence
             _dbContext.Persons.Remove(entity);
         }
 
-        public Task<IQueryable<PersonsRelationsModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken = default)
+        public Task<IQueryable<PersonRelationModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken = default)
         {
             var query = _dbContext.PersonRelations
                 .AsNoTracking()
@@ -90,7 +85,7 @@ namespace Persistence
                 })
                 .OrderBy(m => m.Key.PersonId)
                 .ThenBy(m => m.Key.RelationType)
-                .Select(s => new PersonsRelationsModel
+                .Select(s => new PersonRelationModel
                 {
                     Id = s.Key.PersonId,
                     FirstName = s.Key.FirstName,

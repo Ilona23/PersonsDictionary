@@ -1,5 +1,5 @@
-﻿using Domain.Abstractions;
-using Domain.Entities;
+﻿using Application.Models;
+using Domain.Abstractions;
 using MediatR;
 
 namespace Application.Persons.Queries.GetPersons
@@ -10,5 +10,5 @@ namespace Application.Persons.Queries.GetPersons
         string? LastName,
         string? PersonalId,
         int? Page,
-        int? PageSize) : IRequest<PagedResult<Person>>;
+        int? PageSize) : IRequest<PagedResult<PersonDetailedModel>>;
 }
