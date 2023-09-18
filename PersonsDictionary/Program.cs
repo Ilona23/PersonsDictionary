@@ -14,6 +14,8 @@ using Application.Abstractions.Messaging;
 using Web.Middlewares;
 using System.Text.Json.Serialization;
 using Domain.Mapping;
+using Serilog;
+using Persons.Directory.Application.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var presentationAssembly = typeof(AssemblyReference).Assembly;
@@ -63,8 +65,22 @@ var app = builder.Build();
 var dbInitializer = new DbInitializer();
 await new DbInitializer().Seed(app.Services, CancellationToken.None);
 
-app.UseErrorHandlingMiddleware();
 app.UseMiddleware<AcceptLanguageMiddleware>();
+app.UseMiddleware<ErrorLoggingMiddleware>();
+
+
+var configuration = new ConfigurationBuilder()
+           .AddJsonFile("appsettings." +
+           "json")
+           .Build();
+var logFilePath = Path.Combine(Directory.GetCurrentDirectory(), configuration["Logging:File:Path"]);
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom
+    .Configuration(builder.Configuration)
+    .WriteTo.File(logFilePath)
+    .CreateLogger();
+
 
 if (app.Environment.IsDevelopment())
 {

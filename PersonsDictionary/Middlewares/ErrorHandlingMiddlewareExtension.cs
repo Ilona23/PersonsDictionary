@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Web.Middlewares
 {
-    public static class ErrorHandlingMiddlewareExtensions
+    public static class ErrorHandlingMiddlewareExtension
     {
         public static void UseErrorHandlingMiddleware(this IApplicationBuilder app)
         {
@@ -27,8 +27,10 @@ namespace Web.Middlewares
 
                     Log.Error(exception, exception.Message);
 
-                    if (exception is HttpException httpException)
+                    if (exception is HttpException)
                     {
+                        var httpException = exception as HttpException;
+
                         code = (int)httpException.Code;
 
                         if (code < 300)
@@ -36,8 +38,10 @@ namespace Web.Middlewares
                             writeReponseBody = false;
                         }
                     }
-                    else if (exception is BadRequestException badRequestException)
+                    else if (exception is BadRequestException)
                     {
+                        var badRequestException = exception as BadRequestException;
+
                         code = (int)HttpStatusCode.BadRequest;
 
                         if (badRequestException.ShowMessage)
@@ -48,8 +52,10 @@ namespace Web.Middlewares
                             fillDefaultResponse = false;
                         }
                     }
-                    else if (exception is NotFoundException notFoundException)
+                    else if (exception is NotFoundException)
                     {
+                        var notFoundException = exception as NotFoundException;
+
                         code = (int)HttpStatusCode.NotFound;
 
                         if (notFoundException.ShowMessage)
@@ -60,8 +66,10 @@ namespace Web.Middlewares
                             fillDefaultResponse = false;
                         }
                     }
-                    else if (exception is UnprocessableEntityException unprocessableEntityException)
+                    else if (exception is UnprocessableEntityException)
                     {
+                        var unprocessableEntityException = exception as UnprocessableEntityException;
+
                         foreach (var item in unprocessableEntityException.ValidationResult.Errors)
                         {
                             if (response.Details.ContainsKey(item.PropertyName))
@@ -74,7 +82,7 @@ namespace Web.Middlewares
 
                         code = (int)HttpStatusCode.UnprocessableEntity;
                     }
-                    else if (exception is ArgumentNullException argumentNullException && exception.Source == "MediatR")
+                    else if (exception is ArgumentNullException && exception.Source == "MediatR")
                     {
                         code = (int)HttpStatusCode.BadRequest;
                     }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Persistance.Configurations;
-using Microsoft.Extensions.Logging;
 
 namespace Persistence.Data
 {
@@ -26,7 +25,6 @@ namespace Persistence.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
             optionsBuilder.UseLazyLoadingProxies();
         }
     }

@@ -17,7 +17,7 @@ namespace Persistence
 
             var persons = PersonsData();
 
-            var existingIds = await _dbContext.Persons.Select(p => p.PersonalId).ToListAsync();
+            var existingIds = await _dbContext.Persons.Select(p => p.PersonalId).ToListAsync(cancellationToken);
             var personsToAdd = persons.Where(p => !existingIds.Contains(p.PersonalId)).ToList();
 
             if (personsToAdd.Any())
