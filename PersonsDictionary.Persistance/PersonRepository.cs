@@ -15,14 +15,15 @@ namespace Persistence
             _dbContext = context;
         }
 
-        public async Task<Person> GetPersonByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Person?> GetPersonByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Persons.FindAsync(id, cancellationToken);
         }
 
-        public async Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Person?> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Persons
+                .AsNoTracking()
                 .Include(x => x.RelatedToPersons)
                 .ThenInclude(x1 => x1.Person)
                 .Include(x => x.RelatedPersons)
@@ -31,9 +32,12 @@ namespace Persistence
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<Person> GetPersonByPersonalIdAsync(string personId, CancellationToken cancellationToken = default)
+        public async Task<Person?> GetPersonByPersonalIdAsync(string personId, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Persons.AsNoTracking().FirstOrDefaultAsync(x => x.PersonalId == personId, cancellationToken);
+            return await _dbContext.Persons
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.PersonalId == personId, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public async Task<List<Person>> GetPersonsAsync(CancellationToken cancellationToken = default)
@@ -107,7 +111,7 @@ namespace Persistence
                 int? PageSize,
                 CancellationToken cancellationToken = default)
         {
-            var query = _dbContext.Persons.AsQueryable();
+            var query = _dbContext.Persons.AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrEmpty(QuickSearch))
             {

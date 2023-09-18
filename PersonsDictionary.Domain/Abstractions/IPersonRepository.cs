@@ -5,11 +5,11 @@ namespace Domain.Abstractions
 {
     public interface IPersonRepository
     {
-        Task<Person> GetPersonByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Person?> GetPersonByIdAsync(int id, CancellationToken cancellationToken);
 
-        Task<Person> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken);
+        Task<Person?> GetPersonByIdDetailedAsync(int id, CancellationToken cancellationToken);
 
-        Task<Person> GetPersonByPersonalIdAsync(string personalId, CancellationToken cancellationToken);
+        Task<Person?> GetPersonByPersonalIdAsync(string personalId, CancellationToken cancellationToken);
 
         Task<List<Person>> GetPersonsAsync(CancellationToken cancellationToken);
 

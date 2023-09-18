@@ -14,6 +14,7 @@ namespace Persistence
         {
             using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var _dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            await _dbContext.Database.MigrateAsync();
 
             var persons = PersonsData();
 
