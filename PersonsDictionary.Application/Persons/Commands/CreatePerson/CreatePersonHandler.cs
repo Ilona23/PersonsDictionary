@@ -31,7 +31,7 @@ namespace Application.Persons.Commands.CreatePerson
             var existingPerson = await _repository.GetPersonByPersonalIdAsync(request.PersonalId, cancellationToken);
             if (existingPerson != null)
             {
-                throw new HttpException($"Person with PersonalId: {request.PersonalId} already exists.", HttpStatusCode.AlreadyReported);
+                throw new HttpException($"Person with PersonalId: {request.PersonalId} already exists.", HttpStatusCode.Conflict);
             }
 
             var person = _dtoToEntityMapper.MapToEntity(request);

@@ -50,18 +50,9 @@ namespace Persistence
             await _dbContext.Persons.AddAsync(entity, cancellationToken);
         }
 
-        public Task UpdateAsync(Person entity)
+        public void Update(Person entity)
         {
-            if (_dbContext.Entry(entity).State == EntityState.Detached)
-            {
-                _dbContext.Attach(entity);
-            }
-            else
-            {
-                _dbContext.Entry(entity).State = EntityState.Modified;
-            }
-
-            return Task.CompletedTask;
+            _dbContext.Persons.Update(entity);
         }
 
         public void Delete(Person entity)

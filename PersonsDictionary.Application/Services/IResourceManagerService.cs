@@ -2,6 +2,6 @@
 {
     public interface IResourceManagerService
     {
-        string GetString(string name);
+        string? GetString(string name);
     }
 }

@@ -59,7 +59,7 @@ namespace Application.Persons.Commands.UpdatePerson
                 }
             }
 
-            await _repository.UpdateAsync(person);
+            _repository.Update(person);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return _personMapper.MapToModel(person);

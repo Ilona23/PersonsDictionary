@@ -39,7 +39,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(FailedRequestResponse), StatusCodes.Status208AlreadyReported)]
+        [ProducesResponseType(typeof(FailedRequestResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Create([FromBody] CreatePersonCommand request, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(request, cancellationToken);

@@ -20,13 +20,6 @@ namespace Application.Persons.Commands.UpdatePersonImage
 
         public async Task<Unit> Handle(UploadPersonImageCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetPersonByIdAsync(request.Id, cancellationToken);
-
-            if (person is null)
-            {
-                throw new BadRequestException($"Unable to upload image, person not found by Id: {request.Id}", HttpStatusCode.NotFound);
-            }
-
             if (request.File == null || request.File.Length == 0)
             {
                 var message = _resourceManagerService.GetString(ValidationMessages.NoFileIsSelected);
@@ -35,32 +28,40 @@ namespace Application.Persons.Commands.UpdatePersonImage
 
             string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
             var extension = Path.GetExtension(request.File.FileName);
+
             if (!allowedExtensions.Contains(extension.ToLower()))
             {
-                throw new ArgumentException(_resourceManagerService.GetString(ValidationMessages.InvalidFileType));
+                throw new InvalidOperationException(_resourceManagerService.GetString(ValidationMessages.InvalidFileType));
             }
 
-            var maxFileSizeInBytes = 2097152;
+            var maxFileSizeInBytes = 2097152; // 2 MB
             if (request.File.Length > maxFileSizeInBytes)
             {
-                throw new ArgumentException(_resourceManagerService.GetString(ValidationMessages.FileSizeIsTooLarge));
+                throw new InvalidOperationException(_resourceManagerService.GetString(ValidationMessages.FileSizeIsTooLarge));
             }
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+            var person = await _repository.GetPersonByIdAsync(request.Id, cancellationToken);
+
+            if (person is null)
+            {
+                throw new BadRequestException($"Unable to upload image, person not found by Id: {request.Id}", HttpStatusCode.NotFound);
+            }
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            string fileName = $"{person.FirstName}_{person.LastName}_{person.Id}.jpg";
+            string path = Path.Combine(filePath, fileName);
+
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);
             }
-
-            string fileName = $"{person.FirstName}_{person.LastName}_{person.Id}.jpg";
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
 
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
-            using FileStream stream = new FileStream(path, FileMode.Create);
+            using FileStream stream = new(path, FileMode.Create);
             await request.File.CopyToAsync(stream, cancellationToken);
 
             return new Unit();

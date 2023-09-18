@@ -15,7 +15,7 @@ namespace Domain.Abstractions
 
         Task InsertAsync(Person entity, CancellationToken cancellationToken);
 
-        Task UpdateAsync(Person entity);
+        void Update(Person entity);
 
         void Delete(Person entity);
 
