@@ -1,9 +1,5 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
-using Domain.Exceptions;
-using Serilog;
-using System.Linq.Expressions;
 
 namespace Application.PipelineBehaviors
 {
@@ -19,44 +15,20 @@ namespace Application.PipelineBehaviors
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            //if (!_validators.Any())
-            //{
-            //    return await next();
-            //}
-
-            //var context = new ValidationContext<TRequest>(request);
-            //var errors = _validators
-            //    .Select(x => x.Validate(context))
-            //    .SelectMany(x => x.Errors)
-            //    .Where(x => x != null);
-
-            //if (errors.Any())
-            //{
-            //    throw new ValidationException(errors);
-            //}
-
-            var typeToCheck = typeof(AbstractValidator<>).MakeGenericType(request.GetType());
-
-            var validatorType = request.GetType().Assembly.GetTypes()
-                .Where(x => typeToCheck.IsAssignableFrom(x))
-                .FirstOrDefault();
-
-            if (validatorType != null)
+            if (!_validators.Any())
             {
-                var @delegate = Expression.Lambda(Expression.New(validatorType)).Compile();
-                var validatorInstance = @delegate.DynamicInvoke();
+                return await next();
+            }
 
-                var validateMethod = validatorInstance?.GetType().GetMethod("Validate", new[] { request.GetType() });
-                var result = validateMethod?.Invoke(validatorInstance, new object[] { request }) as ValidationResult;
+            var context = new ValidationContext<TRequest>(request);
+            var errors = _validators
+                .Select(x => x.Validate(context))
+                .SelectMany(x => x.Errors)
+                .Where(x => x != null);
 
-                if (!result.IsValid)
-                {
-                    var exception = new UnprocessableEntityException($"Validation error: '{result}'", result);
-
-                    Log.Error(exception, exception.Message);
-
-                    throw exception;
-                }
+            if (errors.Any())
+            {
+                throw new ValidationException(errors);
             }
 
             var response = await next();
