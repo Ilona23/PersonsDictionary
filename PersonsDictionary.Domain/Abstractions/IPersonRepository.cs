@@ -17,7 +17,11 @@ namespace Domain.Abstractions
 
         void Update(Person entity);
 
+        void Update(PersonRelation entity);
+
         void Delete(Person entity);
+
+        void Delete(PersonRelation entity);
 
         Task<IQueryable<PersonRelationModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken);
 

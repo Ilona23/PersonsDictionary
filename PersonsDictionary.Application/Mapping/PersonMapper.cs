@@ -33,6 +33,7 @@ namespace Application.Mapping
 
             return new Person
             {
+                CreatedDate = DateTime.Now,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 PersonalId = model.PersonalId,

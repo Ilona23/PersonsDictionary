@@ -10,6 +10,7 @@ namespace Application.Mapping
         {
             var person = new Person
             {
+                CreatedDate = DateTime.Now,
                 FirstName = command.FirstName,
                 LastName = command.LastName,
                 PersonalId = command.PersonalId,

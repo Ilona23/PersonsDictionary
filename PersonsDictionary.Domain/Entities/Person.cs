@@ -8,6 +8,7 @@ namespace Domain.Entities
         public Person()
         {
             RelatedPersons = new List<PersonRelation>();
+            RelatedToPersons = new List<PersonRelation>();
             PhoneNumbers = new List<PhoneNumber>();
         }
 

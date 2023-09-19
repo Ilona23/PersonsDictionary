@@ -10,5 +10,5 @@ namespace Application.Persons.Queries.GetPersons
         string? LastName,
         string? PersonalId,
         int? Page,
-        int? PageSize) : IRequest<PagedResult<PersonDetailedModel>>;
+        int? PageSize) : IRequest<PagedResult<PersonModel>>;
 }

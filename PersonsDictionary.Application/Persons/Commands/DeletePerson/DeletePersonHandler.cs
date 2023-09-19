@@ -34,7 +34,7 @@ namespace Application.Persons.Commands.DeletePerson
             _repository.Delete(person);
 
             await _unitOfWork.CommitAsync(cancellationToken);
-            return new DeletePersonResponse { Success = false, Message = "Person deleted successfully." };
+            return new DeletePersonResponse { Success = true, Message = "Person deleted successfully." };
         }
     }
 }

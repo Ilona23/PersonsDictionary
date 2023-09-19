@@ -9,7 +9,6 @@ namespace Application.Mapping
         {
             return new RelatedPersonsModel
             {
-                PersonId = entity.PersonId,
                 RelatedPersonId = entity.RelatedPersonId,
                 RelationType = entity.RelationType
             };
@@ -19,7 +18,6 @@ namespace Application.Mapping
         {
             return new PersonRelation
             {
-                PersonId = model.PersonId,
                 RelatedPersonId = model.RelatedPersonId,
                 RelationType = model.RelationType
             };

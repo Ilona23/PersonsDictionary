@@ -48,6 +48,8 @@ namespace Application.Persons.Commands.CreatePersonRelation
             person.RelatedPersons.Add(personRelation);
             relatedPerson.RelatedToPersons.Add(personRelation);
 
+            _repository.Update(personRelation);
+
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return _relatedPersonsMapper.MapToModel(personRelation);

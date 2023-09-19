@@ -6,18 +6,18 @@ using MediatR;
 
 namespace Application.Persons.Queries.GetPersons
 {
-    public class GetPersonsSearchQueryHandler : IRequestHandler<GetPersonsSearchQuery, PagedResult<PersonDetailedModel>>
+    public class GetPersonsSearchQueryHandler : IRequestHandler<GetPersonsSearchQuery, PagedResult<PersonModel>>
     {
         private readonly IPersonRepository _repository;
-        private readonly IMapper<Person, PersonDetailedModel> _personMapper;
+        private readonly IMapper<Person, PersonModel> _personMapper;
 
-        public GetPersonsSearchQueryHandler(IPersonRepository repository, IMapper<Person, PersonDetailedModel> personMapper)
+        public GetPersonsSearchQueryHandler(IPersonRepository repository, IMapper<Person, PersonModel> personMapper)
         {
             _repository = repository;
             _personMapper = personMapper;
         }
 
-        public async Task<PagedResult<PersonDetailedModel>> Handle(GetPersonsSearchQuery searchCriteria, CancellationToken cancellationToken)
+        public async Task<PagedResult<PersonModel>> Handle(GetPersonsSearchQuery searchCriteria, CancellationToken cancellationToken)
         {
             var sourcePagedResult = await _repository.SearchPersonsAsync(
                 searchCriteria.QuickSearch,
@@ -28,7 +28,7 @@ namespace Application.Persons.Queries.GetPersons
                 searchCriteria.PageSize,
                 cancellationToken);
 
-            var pagedResultPersonModel = new PagedResult<PersonDetailedModel>
+            var pagedResultPersonModel = new PagedResult<PersonModel>
             {
                 TotalCount = sourcePagedResult.TotalCount,
                 Page = sourcePagedResult.Page,

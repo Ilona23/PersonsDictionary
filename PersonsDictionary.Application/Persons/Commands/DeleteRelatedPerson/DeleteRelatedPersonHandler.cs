@@ -3,7 +3,6 @@ using Application.Constants;
 using Domain.Exceptions;
 using Application.Services;
 using Domain.Abstractions;
-using Application.Persons.Commands.DeletePerson;
 
 namespace Application.Persons.Commands.DeleteRelatedPerson
 {
@@ -39,8 +38,10 @@ namespace Application.Persons.Commands.DeleteRelatedPerson
             }
 
             person.RelatedPersons.Remove(relatedPerson);
+            _repository.Delete(relatedPerson);
+
             await _unitOfWork.CommitAsync(cancellationToken);
-            return new DeleteRelatedPersonResponse { Success = false, Message = "Related person deleted successfully." };
+            return new DeleteRelatedPersonResponse { Success = true, Message = "Related person deleted successfully." };
         }
     }
 }

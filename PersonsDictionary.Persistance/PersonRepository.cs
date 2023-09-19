@@ -55,9 +55,19 @@ namespace Persistence
             _dbContext.Persons.Update(entity);
         }
 
+        public void Update(PersonRelation entity)
+        {
+            _dbContext.PersonRelations.Update(entity);
+        }
+
         public void Delete(Person entity)
         {
             _dbContext.Persons.Remove(entity);
+        }
+
+        public void Delete(PersonRelation entity)
+        {
+            _dbContext.PersonRelations.Remove(entity);
         }
 
         public Task<IQueryable<PersonRelationModel>> GetPersonsRelationsAsync(CancellationToken cancellationToken = default)
@@ -102,7 +112,10 @@ namespace Persistence
                 int? PageSize,
                 CancellationToken cancellationToken = default)
         {
-            var query = _dbContext.Persons.AsNoTracking().AsQueryable();
+            var query = _dbContext.Persons
+                .AsNoTracking()
+                .Include(x => x.PhoneNumbers)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(QuickSearch))
             {

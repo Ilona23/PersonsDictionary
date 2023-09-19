@@ -35,6 +35,7 @@ namespace Application.Mapping
 
             return new Person
             {
+                CreatedDate = DateTime.Now,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 PersonalId = model.PersonalId,
@@ -53,7 +54,6 @@ namespace Application.Mapping
 
             return new RelatedPersonsModel
             {
-                PersonId = relation.PersonId,
                 RelatedPersonId = relation.RelatedPersonId,
                 RelationType = relation.RelationType
             };
